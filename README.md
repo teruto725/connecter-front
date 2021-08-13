@@ -2,8 +2,9 @@
 
 
 ## version 
-node.js 14.17.3
-
+node.js: 14.17.3
+nuxt.js: 2.15.8
+vue.js: 2.6.14 
 
 ## hosting
 AWS Amplifyにデプロイしています。
