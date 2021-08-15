@@ -20,4 +20,3 @@ $ npm run generate
 ```
 
 を実行してpushしてください。
-
