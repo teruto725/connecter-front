@@ -25,7 +25,7 @@
     </v-row>
     <v-container style="width: 80%">
       <v-form v-on:submit.prevent="doLogin">
-        <FormTitle :title="'体温'" />
+        <FormTitle :title="'体調'" />
         <v-row>
           <v-col>
             <v-text-field
@@ -37,7 +37,6 @@
             />
           </v-col>
         </v-row>
-        <FormTitle :title="'体調'" />
         <v-row col-6>
           <v-col>
             <v-radio-group v-model="parents_report.is_cold_symptom">

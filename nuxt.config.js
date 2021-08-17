@@ -78,7 +78,12 @@ export default {
           background: "#f5f5dc"
         }
       }
+    },
+    /*以下追加*/
+    options: {
+      customProperties: true
     }
+
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

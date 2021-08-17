@@ -3,7 +3,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-  login(state, {user}) {
+  login(state, user) {
     state.current_user= user
   },
   getCurrentUser(state){

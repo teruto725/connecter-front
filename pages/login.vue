@@ -16,19 +16,18 @@
         <v-text-field  
           type="text" 
           required 
-          placeholder="Name" 
+          placeholder="ユーザー名" 
           :rules="nameRules"
           v-model="user.name" 
         />
-
         <v-text-field  
           type="password" 
           required 
-          placeholder="Password" 
+          placeholder="パスワード" 
           v-model="user.password"
           :rules="pathwordRules" 
         />
-        <v-btn outlined type="submit" color = "primary">Login</v-btn>
+        <v-btn outlined style="width:100%" type="submit" color = "primary">ログインする</v-btn>
       </v-form>
     </v-row>
   </v-container>
@@ -54,19 +53,25 @@ export default {
   methods: {
     doLogin() {
       const uri = "https://uniback-summer7913.herokuapp.com/login";
-      console.log(this.user.name)
       axios.post(
         uri, 
         {
           name: this.user.name,
           password: this.user.password,
-        }
-      
+        }   
       ).then(response => {
         const user = response.data
+        console.log(user.id)
         this.$store.commit("users/login", user)
-        this.$router.push('/childs/1/child_report')
-
+        if (user.role == "parent"){
+          this.$router.push("/parents/children_list")//親なら子供選択画面へ
+        }
+        else if (user.role == "childminder"){
+          this.$router.push("/childminders/children_list")//child
+        }
+        else{
+          this.error = true
+        }
       }).catch(error => {
         console.log(error)
         this.error = true;
