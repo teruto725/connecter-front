@@ -73,7 +73,7 @@ export default {
         },
         light: {
           primary: "#ffb6c1",
-          secondary: "#dda0dd3",
+          secondary: "#dda0dd",
           error: "#ff4500",
           background: "#f5f5dc"
         }

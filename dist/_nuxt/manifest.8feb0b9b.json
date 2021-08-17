@@ -1,7 +1,7 @@
 {
   "name": "unisys-front",
   "short_name": "unisys-front",
-  "description": "## Build Setup",
+  "description": "",
   "icons": [
     {
       "src": "/_nuxt/icons/icon_64x64.e3e9fb.png",
