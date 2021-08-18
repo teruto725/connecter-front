@@ -24,9 +24,9 @@
       <v-divider />
     </v-row>
     <v-container style="width: 80%">
-      <v-form v-on:submit.prevent="doLogin">
+      <v-form v-on:submit.prevent="post_report">
         <FormTitle :title="'体調'" />
-        <v-row>
+        <v-row v-if="is_p">
           <v-col>
             <v-text-field
               type="text"
@@ -35,6 +35,16 @@
               label="体温"
               v-model="parents_report.body_tempreture"
             />
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col>
+            <v-card outlined>
+              <v-card-text>
+                <v-row style="margin: 2px;">
+                </v-row>
+              </v-card-text>
+            </v-card>
           </v-col>
         </v-row>
         <v-row col-6>
@@ -167,11 +177,20 @@
   </v-container>
 </template>
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
       childminders_report: {
         day: "2021/3/3",
+        description:"自由記述",
+        notification: "",
+        appetite: 1,
+        appetite_description: "食欲自由機銃",
+        mood:2,
+        mood_description: "機嫌自由記述",
+        is_medicine: true,
+        is_completed: true
       },
       parents_report: {
         body_tempreture: 36.6,
@@ -189,22 +208,50 @@ export default {
         age: 6,
       },
       times: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
-      pickup_persons: ["父","母","叔父","叔母","その他"]
+      pickup_persons: ["父","母","叔父","叔母","その他"],
+      is_p:false
+
     };
   },
   created: function () {
     // this.get_childminders_report()
     // this.get_parents_report()
+    this.check_login()
+    this.get_child()
+    this.get_current_user()
+    
   },
   methods: {
+    check_login(){
+      const user = this.$store.state.users.current_user;
+      console.log("login")
+      console.log(user)
+      if (user){
+      }
+      else{
+        this.$router.push("/login")
+      }
+    },
+    get_current_user(){
+      const user = this.$store.state.users.current_user;
+      console.log(user)
+      if (user.role == "parent"){
+        this.is_p = true
+      }
+      else{
+        this.is_p = false
+      }
+    },
     get_child() {
-      const child_id = $route.params.id;
+      const child_id = this.$route.params.id;
+      console.log(child_id);
       const uri =
-        "https://uniback-summer7913.herokuapp.com/childs/" + str(child_id);
+        "https://uniback-summer7913.herokuapp.com/children/" + child_id;
       axios
         .get(uri, {})
         .then((response) => {
           this.child = response.data;
+          console.log(this.child)
         })
         .catch((error) => {
           console.log(error);
@@ -212,28 +259,27 @@ export default {
         });
     },
     get_childminders_report() {
-      const user = this.$store.state.current_user;
-      const child_id = $route.params.id;
+      const child_id = this.$route.params.id;
       const uri =
-        "https://uniback-summer7913.herokuapp.com/childs/" +
-        str(child_id) +
+        "https://uniback-summer7913.herokuapp.com/children/" +
+        child_id+
         "/childminders_reports/today";
       axios
-        .get(uri, {})
+        .get(uri, {}
         .then((response) => {
           this.childminders_report = response.data;
         })
         .catch((error) => {
           console.log(error);
           this.error = true;
-        });
+        })
+      )
     },
     get_parents_report() {
-      const user = this.$store.state.current_user;
-      const child_id = $route.params.id;
+      const child_id = this.$route.params.id;
       const uri =
-        "https://uniback-summer7913.herokuapp.com/childs/" +
-        str(child_id) +
+        "https://uniback-summer7913.herokuapp.com/children/" +
+        child_id +
         "/parents_reports/today";
       axios
         .get(uri, {})
@@ -246,13 +292,29 @@ export default {
         });
     },
     post_report() {
-      const user = this.$store.state.current_user;
-      const child_id = $route.params.id;
-      const uri =
-        "https://uniback-summer7913.herokuapp.com/childs/" +
-        str(child_id) +
-        "/parents_reports/today";
+      const user = this.$store.state.users.current_user;
+      const child_id = this.$route.params.id;
+      console.log(this.parents_report)
+      if (user.role == "parent"){
+        const uri =
+          "https://uniback-summer7913.herokuapp.com/children/" +
+          child_id +
+          "/parents_reports/today";
+        axios.post(
+          uri, 
+          {
+            report: this.parents_report,
+            user_id: user.id,
+          }   
+        ).then(response => {
+          console.log(response.data[0])
+        }).catch(error => {
+          console.log(error)
+          this.error = true;
+        });
+      }
     },
+    
   },
 };
 </script>

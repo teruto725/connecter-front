@@ -52,7 +52,7 @@ export default {
         {}   
       ).then(response => {
         const children = response.data.children
-        console.log(children)
+        console.log(response.data)
         if (children.length == 0){
         }
         else if(children.length == 1){//一人ならreportへ直接飛ぶ
