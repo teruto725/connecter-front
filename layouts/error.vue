@@ -6,8 +6,8 @@
     <h1 v-else>
       {{ otherError }}
     </h1>
-    <NuxtLink to="/">
-      Home page
+    <NuxtLink to="/login">
+      ログインに戻る
     </NuxtLink>
   </v-app>
 </template>
