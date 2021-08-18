@@ -77,3 +77,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.v-application {
+  background-color: #f5f5dc;
+}
+</style>

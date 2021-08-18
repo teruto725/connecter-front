@@ -1,10 +1,5 @@
 <template>
   <v-container>
-    <v-row justify="center">
-      <v-alert dense outlined type="error" text v-model="error">
-        Server error
-      </v-alert>
-    </v-row>
     <v-row>
       <h2>{{ childminders_report.day }}</h2>
     </v-row>
@@ -14,7 +9,7 @@
     </v-row>
     <v-row justify="center"> </v-row>
     <v-row>
-      <v-col col-6>{{ child.class }}</v-col>
+      <v-col col-6>{{ child.class_name }}</v-col>
       <v-col col-6
         ><strong>{{ child.age }}</strong
         >歳</v-col
@@ -30,7 +25,6 @@
           <v-col>
             <v-text-field
               type="text"
-              required
               outlined
               label="体温"
               v-model="parents_report.body_temperature"
@@ -41,8 +35,7 @@
           <v-col>
             <v-card outlined>
               <v-card-text>
-                <v-row style="margin: 2px;">
-                </v-row>
+                <v-row style="margin: 2px"> </v-row>
               </v-card-text>
             </v-card>
           </v-col>
@@ -86,7 +79,7 @@
           </v-col>
         </v-row>
         <FormTitle :title="'機嫌'" />
-        <v-row >
+        <v-row>
           <v-col>
             <v-radio-group v-model="parents_report.mood">
               <v-radio label="機嫌がいい" :value="0"></v-radio>
@@ -95,7 +88,7 @@
             </v-radio-group>
           </v-col>
         </v-row>
-        <v-row v-if="parents_report.mood===2">
+        <v-row v-if="parents_report.mood === 2">
           <v-col>
             <v-textarea
               outlined
@@ -107,7 +100,7 @@
         </v-row>
 
         <FormTitle :title="'薬'" />
-        <v-row >
+        <v-row>
           <v-col>
             <v-radio-group v-model="parents_report.is_medicine">
               <v-radio label="薬等なし" :value="false"></v-radio>
@@ -115,7 +108,7 @@
             </v-radio-group>
           </v-col>
         </v-row>
-        <v-row v-if="parents_report.is_medicine===true">
+        <v-row v-if="parents_report.is_medicine === true">
           <v-col>
             <v-textarea
               outlined
@@ -126,9 +119,8 @@
           </v-col>
         </v-row>
 
-
         <FormTitle :title="'食欲'" />
-        <v-row >
+        <v-row>
           <v-col>
             <v-radio-group v-model="parents_report.appetite">
               <v-radio label="よく食べた" :value="0"></v-radio>
@@ -137,7 +129,7 @@
             </v-radio-group>
           </v-col>
         </v-row>
-        <v-row v-if="parents_report.appetite===2">
+        <v-row v-if="parents_report.appetite === 2">
           <v-col>
             <v-textarea
               outlined
@@ -148,23 +140,22 @@
           </v-col>
         </v-row>
 
-
         <FormTitle :title="'睡眠時間'" />
 
-       <v-row >
+        <v-row>
           <v-col>
-            <v-combobox 
-              v-model="parents_report.bed_time" 
-              outlined 
+            <v-combobox
+              v-model="parents_report.bed_time"
+              outlined
               :items="times"
               label="就寝時間"
             >
             </v-combobox>
           </v-col>
           <v-col>
-            <v-combobox 
-              v-model="parents_report.wake_up_time" 
-              outlined 
+            <v-combobox
+              v-model="parents_report.wake_up_time"
+              outlined
               :items="times"
               label="起床時間"
             >
@@ -172,20 +163,20 @@
           </v-col>
         </v-row>
         <FormTitle :title="'お迎え'" />
-            <v-combobox 
-              v-model="parents_report.pick_up_time" 
-              outlined 
-              :items="times"
-              label="時間"
-            >
-            </v-combobox>
-            <v-combobox 
-              v-model="parents_report.pick_up_person" 
-              outlined 
-              :items="pickup_persons"
-              label="お迎えに来るひと"
-            >
-            </v-combobox>
+        <v-combobox
+          v-model="parents_report.pick_up_time"
+          outlined
+          :items="times"
+          label="時間"
+        >
+        </v-combobox>
+        <v-combobox
+          v-model="parents_report.pick_up_person"
+          outlined
+          :items="pickup_persons"
+          label="お迎えに来るひと"
+        >
+        </v-combobox>
         <FormTitle :title="'伝達事項'" />
         <v-row>
           <v-col>
@@ -208,79 +199,88 @@
             </v-textarea>
           </v-col>
         </v-row>
+
         <v-row>
-          <v-btn outlined type="submit" color="primary">Login</v-btn>
+          <v-btn
+            elevation="8"
+            dark
+            type="submit"
+            color="primary"
+            fixed
+            fab
+            right
+            x-large
+            bottom
+            style="bottom: 80px"
+            class="font-weight-bold"
+            >保存</v-btn
+          >
         </v-row>
+
       </v-form>
       <v-row>
-        <v-col>
-          aaa
-        </v-col>
+        <v-col> aaa </v-col>
       </v-row>
     </v-container>
   </v-container>
 </template>
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
   data() {
     return {
       childminders_report: {
         day: "2021/3/3",
-        description:"自由記述",
+        description: "自由記述",
         notification: "",
         appetite: 1,
         appetite_description: "食欲自由機銃",
-        mood:2,
+        mood: 2,
         mood_description: "機嫌自由記述",
         is_medicine: true,
-        is_completed: true
+        is_completed: true,
       },
-      parents_report: {
-      },
+      parents_report: {},
       error: false,
       child: {
         name: "いはらくん",
-        class: "ひまわりぐみ",
+        class_name: "ひまわりぐみ",
         age: 6,
       },
-      times: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
-      pickup_persons: ["父","母","叔父","叔母","その他"],
-      is_p:false
-
+      times: [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20, 21, 22, 23, 24,
+      ],
+      pickup_persons: ["父", "母", "叔父", "叔母", "その他"],
+      is_p: false,
     };
   },
   created: function () {
-    // 
-    // 
-    this.check_login()
-    this.get_child()
-    this.get_current_user()
-    this.get_parents_report()
-    
+    //
+    //
+    this.check_login();
+    this.get_child();
+    this.get_current_user();
+    this.get_parents_report();
   },
-  watch:{
-
-  },
+  watch: {},
   methods: {
-    check_login(){
+    check_login() {
       const user = this.$store.state.users.current_user;
-      console.log("login")
-      console.log(user)
-      if (user){
-      }
-      else{
-        this.$router.push("/login")
+      console.log("login");
+      console.log(user);
+      if (user) {
+      } else {
+        this.$router.push("/login");
       }
     },
-    get_current_user(){
+    get_current_user() {
       const user = this.$store.state.users.current_user;
-      console.log(user)
-      if (user.role == "parent"){
-        this.is_p = true
-      }
-      else{
-        this.is_p = false
+      console.log(user);
+      if (user.role == "parent") {
+        this.is_p = true;
+      } else {
+        this.is_p = false;
       }
     },
     get_child() {
@@ -302,20 +302,21 @@ export default {
       const child_id = this.$route.params.id;
       const uri =
         "https://uniback-summer7913.herokuapp.com/children/" +
-        child_id+
+        child_id +
         "/childminders_reports/today";
-      axios
-        .get(uri, {}
-        .then((response) => {
-          console.log("get_parents_report")
-          console.log(response.data)
-          this.childminders_report = response.data.report;
-        })
-        .catch((error) => {
-          console.log(error);
-          this.error = true;
-        })
-      )
+      axios.get(
+        uri,
+        {}
+          .then((response) => {
+            console.log("get_parents_report");
+            console.log(response.data);
+            this.childminders_report = response.data.report;
+          })
+          .catch((error) => {
+            console.log(error);
+            this.error = true;
+          })
+      );
     },
     get_parents_report() {
       const child_id = this.$route.params.id;
@@ -326,79 +327,94 @@ export default {
       axios
         .get(uri, {})
         .then((response) => {
-          console.log("get_parents_report")
-          console.log(response.data)
+          console.log("get_parents_report");
+          console.log(response.data);
           this.parents_report = response.data.report;
-          this.parents_report.bed_time = this.transform_date_to_hour(this.parents_report.bed_time)
-          this.parents_report.wake_up_time = this.transform_date_to_hour(this.parents_report.wake_up_time)
-          this.parents_report.pick_up_time = this.transform_date_to_hour(this.parents_report.pick_up_time)
-          console.log(this.parents_report)
-          console.log("done")
+          this.parents_report.bed_time = this.transform_date_to_hour(
+            this.parents_report.bed_time
+          );
+          this.parents_report.wake_up_time = this.transform_date_to_hour(
+            this.parents_report.wake_up_time
+          );
+          this.parents_report.pick_up_time = this.transform_date_to_hour(
+            this.parents_report.pick_up_time
+          );
+          console.log(this.parents_report);
+          console.log("done");
         })
         .catch((error) => {
           console.log(error);
-          console.log("error")
+          console.log("error");
           this.error = true;
         });
     },
-    
+
     post_report() {
       const user = this.$store.state.users.current_user;
       const child_id = this.$route.params.id;
-      console.log("fdas")
-      this.parents_report.bed_time = this.transform_hour_to_date(this.parents_report.bed_time)
-      console.log(this.parents_report.bed_time)
-      this.parents_report.wake_up_time = this.transform_hour_to_date(this.parents_report.wake_up_time)
-      this.parents_report.pick_up_time = this.transform_hour_to_date(this.parents_report.pick_up_time)
-      if (user.role == "parent"){
+      console.log("fdas");
+      this.parents_report.bed_time = this.transform_hour_to_date(
+        this.parents_report.bed_time
+      );
+      console.log(this.parents_report.bed_time);
+      this.parents_report.wake_up_time = this.transform_hour_to_date(
+        this.parents_report.wake_up_time
+      );
+      this.parents_report.pick_up_time = this.transform_hour_to_date(
+        this.parents_report.pick_up_time
+      );
+      if (user.role == "parent") {
         const uri =
           "https://uniback-summer7913.herokuapp.com/children/" +
           child_id +
           "/parents_reports/today";
-        axios.post(
-          uri, 
-          {
+        axios
+          .post(uri, {
             report: this.parents_report,
             user_id: user.id,
-          }   
-        ).then(response => {
-          console.log("post parents preport")
-          console.log(response.data[0])
-          this.parents_report = response.data[0];
-          this.parents_report.bed_time = this.transform_date_to_hour(this.parents_report.bed_time)
-          this.parents_report.wake_up_time = this.transform_date_to_hour(this.parents_report.wake_up_time)
-          this.parents_report.pick_up_time = this.transform_date_to_hour(this.parents_report.pick_up_time)
-        }).catch(error => {
-          console.log(error)
-          console.log("error")
-          this.error = true;
-        });
+          })
+          .then((response) => {
+            console.log("post parents preport");
+            console.log(response.data[0]);
+            this.parents_report = response.data[0];
+            this.parents_report.bed_time = this.transform_date_to_hour(
+              this.parents_report.bed_time
+            );
+            this.parents_report.wake_up_time = this.transform_date_to_hour(
+              this.parents_report.wake_up_time
+            );
+            this.parents_report.pick_up_time = this.transform_date_to_hour(
+              this.parents_report.pick_up_time
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log("error");
+            this.error = true;
+          });
       }
     },
-    transform_hour_to_date(hour){
-      if (hour != null){
-        let date = new Date( 'Thu, 01 May 2008 02:00:00' );
-        console.log("hour to date")
-        console.log(hour)
-        date.setHours(hour)
-        let date_s = date.getHours()+":00:00.000+09:00"
-        console.log(date_s)
-        return date_s
-      }
-      else{ 
+    transform_hour_to_date(hour) {
+      if (hour != null) {
+        let date = new Date("Thu, 01 May 2008 02:00:00");
+        console.log("hour to date");
+        console.log(hour);
+        date.setHours(hour);
+        let date_s = date.getHours() + ":00:00.000+09:00";
+        console.log(date_s);
+        return date_s;
+      } else {
         return null;
       }
     },
-    transform_date_to_hour(date_s){
-      if (date_s){
-        console.log("date to hour")
-        return parseInt(date_s.substr(date_s.indexOf("T")+1,2),10)
-      }
-      else{ 
+    transform_date_to_hour(date_s) {
+      if (date_s) {
+        console.log("date to hour");
+        return parseInt(date_s.substr(date_s.indexOf("T") + 1, 2), 10);
+      } else {
         return null;
       }
     },
-    
   },
 };
 </script>

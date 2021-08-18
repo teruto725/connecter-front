@@ -69,10 +69,11 @@ export default {
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          success: colors.green.accent3,
+          background: "#f5f5dc"
         },
         light: {
-          primary: "#ffb6c1",
+          primary: "#3cb371",
           secondary: "#dda0dd",
           error: "#ff4500",
           background: "#f5f5dc"
