@@ -1,55 +1,43 @@
 <template>
   <v-app>
-    <v-app-bar fixed app color="primary">
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn icon @click.stop="drawer = true">
-        <v-icon>mdi-menu</v-icon>
+    <v-app-bar dark fixed app color="primary">
+      <v-toolbar-title class="font-h1">Unisys連絡帳</v-toolbar-title>
+      <v-spacer/>
+      <v-chip label outlined v-if="$store.state.users.current_user.role=='childminder'">
+
+      <v-icon left>
+        mdi-account
+      </v-icon>
+        保育士さん画面
+      </v-chip>
+      <v-btn @click="logout()" label outlined v-if="$store.state.users.current_user.role=='parent'">
+
+      <v-icon left>
+        mdi-account
+      </v-icon>
+        保護者さん画面
+      <v-icon right>
+        mdi-logout
+      </v-icon>
       </v-btn>
+
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" absolute temporary>
-      <v-list nav dense>
-        <v-list-item-group active-class="black--text text--accent-4">
-          <v-list-item>
-            <v-list-item-title>Foo</v-list-item-title>
-          </v-list-item>
 
-          <v-list-item>
-            <v-list-item-title>Bar</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Fizz</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Buzz</v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
     <v-main>
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-    <v-bottom-navigation fixed color="primary">
-      <v-btn value="recent">
-        <span>連絡帳を書く</span>
+    <v-bottom-navigation fixed color="primary" v-if="$store.state.users.current_user.role == 'parent'">
+      <v-btn value="recent" to="/parents/children_list">
+        <span>今日の連絡帳</span>
 
-        <v-icon>mdi-history</v-icon>
+        <v-icon>mdi-badge-account-horizontal</v-icon>
       </v-btn>
 
       <v-btn value="favorites">
-        <span>Favorites</span>
-
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn value="nearby">
-        <span>Nearby</span>
-
-        <v-icon>mdi-map-marker</v-icon>
+        <span>明日の連絡帳</span>
+        <v-icon>mdi-badge-account-horizontal-outline</v-icon>
       </v-btn>
     </v-bottom-navigation>
   </v-app>
@@ -59,22 +47,14 @@
 export default {
   data() {
     return {
-      items: [
-        {
-          icon: "mdi-apps",
-          title: "Welcome",
-          to: "/",
-        },
-        {
-          icon: "mdi-chart-bubble",
-          title: "Inspire",
-          to: "/inspire",
-        },
-      ],
-      drawer: false,
-      title: "連絡帳"
     };
   },
+  methods:{
+    logout() {
+      this.$store.commit("users/logout")
+      this.$router.push("/login")
+    }
+  }
 };
 </script>
 <style scoped>

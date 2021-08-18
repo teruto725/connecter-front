@@ -8,10 +8,10 @@
         text
         v-model="error"
       >
-        <strong>Name</strong> or <strong>Password</strong> is invalid.
+        <strong>ユーザ名</strong> か <strong>パスワード</strong>が間違っています
       </v-alert>
     </v-row>
-    <v-row justify="center">
+    <v-row justify="center" style="margin-top:50px;">
        <v-form v-on:submit.prevent="doLogin" v-model="valid">
         <v-text-field  
           type="text" 
@@ -19,6 +19,7 @@
           placeholder="ユーザー名" 
           :rules="nameRules"
           v-model="user.name" 
+          outlined
         />
         <v-text-field  
           type="password" 
@@ -26,6 +27,7 @@
           placeholder="パスワード" 
           v-model="user.password"
           :rules="pathwordRules" 
+          outlined
         />
         <v-btn outlined style="width:100%" type="submit" color = "primary">ログインする</v-btn>
       </v-form>
@@ -75,6 +77,7 @@ export default {
       }).catch(error => {
         console.log(error)
         this.error = true;
+        this.error_message = true;
       });
     }
   }

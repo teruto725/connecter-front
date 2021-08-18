@@ -17,6 +17,6 @@ p.title-name{
   width: 100%;
   margin-top:20px;
   text-align:center;
-  border-bottom: 3px solid  "primary"; 
+  border-bottom: 3px solid  #3cb371; 
 }
 </style>

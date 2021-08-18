@@ -219,7 +219,7 @@
 
       </v-form>
       <v-row>
-        <v-col> aaa </v-col>
+        <v-col> <br></v-col>
       </v-row>
     </v-container>
   </v-container>
@@ -243,9 +243,6 @@ export default {
       parents_report: {},
       error: false,
       child: {
-        name: "いはらくん",
-        class_name: "ひまわりぐみ",
-        age: 6,
       },
       times: [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -267,12 +264,10 @@ export default {
   methods: {
     check_login() {
       const user = this.$store.state.users.current_user;
-      console.log("login");
-      console.log(user);
-      if (user) {
-      } else {
+      console.log(user)
+      if (typeof user=== "undefine") {
         this.$router.push("/login");
-      }
+      } 
     },
     get_current_user() {
       const user = this.$store.state.users.current_user;
@@ -376,16 +371,7 @@ export default {
           .then((response) => {
             console.log("post parents preport");
             console.log(response.data[0]);
-            this.parents_report = response.data[0];
-            this.parents_report.bed_time = this.transform_date_to_hour(
-              this.parents_report.bed_time
-            );
-            this.parents_report.wake_up_time = this.transform_date_to_hour(
-              this.parents_report.wake_up_time
-            );
-            this.parents_report.pick_up_time = this.transform_date_to_hour(
-              this.parents_report.pick_up_time
-            );
+            this.get_parents_report()
           })
           .catch((error) => {
             console.log(error);

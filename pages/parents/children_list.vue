@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container >
     <v-row justify="center">
       <v-col>
         <h2>連絡帳を選んでください。</h2>
@@ -8,10 +8,10 @@
     <v-row 
       v-for="child in children"
       :key="child.id"
-      style="width: 100%;"
+      justify="center"
       >
-     <v-col style="width: 100%;">
-       <v-btn style="width: 100%;"  outlined :to="'/children/'+child.id+'/child_report'">{{child.name}}</v-btn>
+     <v-col>
+       <v-btn color="primary" block outlined :to="'/children/'+child.id+'/child_report'">{{child.name}}</v-btn>
      </v-col>  
     </v-row>
   </v-container>
