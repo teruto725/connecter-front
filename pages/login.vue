@@ -69,7 +69,7 @@ export default {
         console.log(user.id)
         this.$store.commit("users/login", user)
         if (user.role == "parent"){
-          this.$router.push("/parents/children_list")//親なら子供選択画面へ
+          this.$router.push("/parents/children_list/today")//親なら子供選択画面へ
         }
         else if (user.role == "childminder"){
           this.$router.push("/childminders/children_list")//child
