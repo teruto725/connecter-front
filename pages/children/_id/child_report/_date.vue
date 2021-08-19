@@ -34,7 +34,7 @@
     <v-container style="width: 80%">
       <v-form >
         <FormTitle :title="'今朝の健康状態'" />
-        <v-row v-if="is_p && is_locked === 'unlocked' ">
+        <v-row v-if="is_p && childminder_report.is_completed === null ">
           <v-col>
             <v-text-field
               type="text"
@@ -99,7 +99,7 @@
             </v-alert>
           </v-col>
         </v-row>
-        <v-row col-6 v-if="is_p && is_locked === 'unlocked' ">
+        <v-row col-6 v-if="is_p && childminder_report.is_completed === null ">
           <v-col>
             <v-radio-group v-model="parents_report.is_cold_symptom">
               <v-radio label="体調がいい" :value="false"></v-radio>
@@ -107,7 +107,7 @@
             </v-radio-group>
           </v-col>
         </v-row>
-        <v-row v-if="parents_report.is_cold_symptom === true && is_p && is_locked === 'unlocked' ">
+        <v-row v-if="parents_report.is_cold_symptom === true && is_p && childminder_report.is_completed === null ">
           <v-col>
             <v-checkbox
               v-model="parents_report.is_cough"
@@ -138,7 +138,7 @@
           </v-col>
         </v-row>
         <FormTitle :title="'機嫌'" />
-        <span v-if="is_p && is_locked === 'unlocked' ">
+        <span v-if="is_p && childminder_report.is_completed === null">
           <v-row >
             <v-col>
               <v-radio-group v-model="parents_report.mood">
@@ -189,7 +189,7 @@
               </v-alert>
             </v-col>
           </v-row>
-          <span v-if=" is_p === false && is_locked === 'unlocked' ">
+          <span v-if=" is_p === false && childminder_report.is_completed !== true ">
           <v-row >
             <v-col>
               <v-radio-group v-model="childminder_report.mood">
@@ -210,7 +210,7 @@
             </v-col>
           </v-row>
           </span>
-          <span v-else>
+          <span v-else-if=" childminder_report.is_completed === true">
             <v-row>
             <v-col>
               <v-alert color="primary" outlined border="left">
@@ -243,7 +243,7 @@
           </span>
         </span>
         <FormTitle :title="'薬'" />
-        <span v-if="is_p  && is_locked === 'unlocked' ">
+        <span v-if="is_p  && childminder_report.is_completed === null ">
           <v-row>
             <v-col>
               <v-radio-group v-model="parents_report.is_medicine">
@@ -292,7 +292,7 @@
               </v-alert>
             </v-col>
           </v-row>
-          <span v-if=" is_p === false && is_locked === 'unlocked' ">
+          <span v-if=" is_p === false && childminder_report.is_completed !== true  ">
           <v-row>
             <v-col>
               <v-radio-group v-model="childminder_report.is_medicine">
@@ -302,7 +302,7 @@
             </v-col>   
           </v-row>
           </span>
-          <span v-else>
+          <span v-else-if=" childminder_report.is_completed === true">
           <v-row >
             <v-col>
               <v-alert color="primary" outlined border="left">
@@ -327,7 +327,7 @@
           </span>
         </span>
         <FormTitle :title="'食欲'" />
-        <span v-if="is_p && is_locked === 'unlocked' ">
+        <span v-if="is_p && childminder_report.is_completed === null ">
           <v-row>
             <v-col>
               <v-radio-group v-model="parents_report.appetite">
@@ -337,7 +337,7 @@
               </v-radio-group>
             </v-col>
           </v-row>
-          <v-row v-if="parents_report.appetite === 2">
+          <v-row v-if="parents_report.is_medicine === true">
             <v-col>
               <v-textarea
                 outlined
@@ -378,7 +378,7 @@
               </v-alert>
             </v-col>
           </v-row>
-          <span v-if=" is_p === false && is_locked === 'unlocked' ">
+          <span v-if=" is_p === false && childminder_report.is_completed !== true  ">
           <v-row>
             <v-col>
               <v-radio-group v-model="childminder_report.appetite">
@@ -399,7 +399,7 @@
             </v-col>
           </v-row>
         </span>
-        <span v-else>
+        <span v-else-if=" childminder_report.is_completed === true">
           <v-row >
             <v-col>
               <v-alert color="primary" outlined border="left">
@@ -432,7 +432,7 @@
         </span>
         </span>
         <FormTitle :title="'睡眠時間'" />
-        <span v-if="is_p && is_locked === 'unlocked' ">
+        <span v-if="is_p && childminder_report.is_completed === null ">
           <v-row>
             <v-col>
               <v-combobox
@@ -483,7 +483,7 @@
           </v-row>
         </span>
         <FormTitle :title="'お迎え'" />
-        <span v-if="is_p && is_locked === 'unlocked' ">
+        <span v-if="is_p && childminder_report.is_completed === null ">
           <v-combobox
             v-model="parents_report.pick_up_time"
             outlined
@@ -530,7 +530,7 @@
           </v-row>
         </span>
         <FormTitle :title="'伝達事項'" />
-        <span v-if="is_p && is_locked === 'unlocked' ">
+        <span v-if="is_p && childminder_report.is_completed === null ">
           <v-row>
             <v-col>
               <v-textarea
@@ -564,7 +564,7 @@
               </v-alert>
             </v-col>
           </v-row>
-          <span v-if=" is_p === false && is_locked === 'unlocked' ">
+          <span v-if=" is_p === false && childminder_report.is_completed !== true ">
           <v-row>
             <v-col>
               <v-textarea
@@ -576,7 +576,7 @@
             </v-col>
           </v-row>
           </span>
-          <span v-else>
+        <span v-else-if=" childminder_report.is_completed === true">
           <v-row >
             <v-col>
               <v-alert color="primary" outlined border="left">
@@ -601,7 +601,7 @@
           </span>
         </span>
         <FormTitle :title="'メッセージ'" />
-        <span v-if="is_p && is_locked === 'unlocked' ">
+        <span v-if="is_p && childminder_report.is_completed === null ">
           <v-row>
             <v-col>
               <v-textarea
@@ -635,7 +635,7 @@
               </v-alert>
             </v-col>
           </v-row>
-          <span v-if=" is_p === false && is_locked === 'unlocked'">
+          <span v-if=" is_p === false && childminder_report.is_completed !== true  ">
           <v-row>
             <v-col>
               <v-textarea
@@ -647,7 +647,7 @@
             </v-col>
           </v-row>
           </span>
-          <span v-else>
+        <span v-else-if=" childminder_report.is_completed === true">
           <v-row >
             <v-col>
               <v-alert color="primary" outlined border="left">
@@ -732,7 +732,6 @@ export default {
       pickup_persons: ["お父さん", "お母さん", "叔父さん", "叔母さん", "おじいちゃん", "おばあちゃん", "その他"],
       is_p: false,
       success: false,
-      is_locked: 'unlocked',
       bodyTemperatureRules:[
         v => !!v || "体温が入力されていません",
         v => /^\d+\.\d+$/.test(v) || "数値を入力してください",
@@ -809,7 +808,6 @@ export default {
           console.log(response.data);
           
           this.parents_report = response.data.report;
-          this.is_locked = response.data.status;
           this.parents_report.bed_time = this.transform_date_to_hour(
             this.parents_report.bed_time
           );
