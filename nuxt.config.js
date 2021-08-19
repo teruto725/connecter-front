@@ -3,8 +3,8 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - unisys-front',
-    title: 'unisys-front',
+    titleTemplate: '',
+    title: 'unisys連絡帳',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -73,10 +73,11 @@ export default {
           background: "#f5f5dc"
         },
         light: {
-          primary: "#3cb371",
+          primary: "#6f4b3e",
           secondary: "#dda0dd",
           error: "#ff4500",
-          background: "#f5f5dc"
+          background: "#f5f5dc",
+          success: colors.green.accent3,
         }
       }
     },
