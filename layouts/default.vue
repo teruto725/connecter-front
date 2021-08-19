@@ -28,13 +28,11 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <v-bottom-navigation fixed color="primary" v-if="$store.state.users.current_user.role == 'parent'">
+    <v-bottom-navigation style="background-color:#dcdcdc;" width="100%" fixed color="primary" v-if="$store.state.users.current_user.role == 'parent'">
       <v-btn value="recent" to="/parents/children_list">
         <span>今日の連絡帳</span>
-
         <v-icon>mdi-badge-account-horizontal</v-icon>
       </v-btn>
-
       <v-btn value="favorites">
         <span>明日の連絡帳</span>
         <v-icon>mdi-badge-account-horizontal-outline</v-icon>

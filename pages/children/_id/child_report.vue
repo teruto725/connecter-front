@@ -274,8 +274,12 @@ export default {
       console.log(user);
       if (user.role == "parent") {
         this.is_p = true;
-      } else {
+      } 
+      else if(user.role == "childminder") {
         this.is_p = false;
+      }
+      else{
+        this.$router.push("/login");
       }
     },
     get_child() {
