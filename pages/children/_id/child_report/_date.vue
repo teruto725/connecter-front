@@ -41,6 +41,7 @@
               outlined
               label="体温"
               v-model="parents_report.body_temperature"
+              :rules="bodyTemperatureRules"
             />
           </v-col>
         </v-row>
@@ -686,7 +687,7 @@
             >保存</v-btn
           >
         </v-row>
-
+    
       </v-form>
       <v-row>
         <v-col> <br></v-col>
@@ -713,18 +714,22 @@ export default {
       pickup_persons: ["お父さん", "お母さん", "叔父さん", "叔母さん", "おじいちゃん", "おばあちゃん", "その他"],
       is_p: false,
       success: false,
+<<<<<<< HEAD:pages/children/_id/child_report.vue
       is_locked: 'unlocked',
+=======
+      bodyTemperatureRules:[
+        v => !!v || "体温が入力されていません",
+        v => /^\d+\.\d+$/.test(v) || "数値を入力してください",
+      ],
+>>>>>>> 42d93cc8177dae0716197e1406b6c0f9e7e35ff8:pages/children/_id/child_report/_date.vue
     };
   },
   created: function () {
-    //
-    //
     this.get_current_user();
     this.get_child();
     this.get_parents_report();
     this.get_childminder_report();
   },
-  watch: {},
   methods: {
     get_current_user() {
       const user = this.$store.state.users.current_user;
@@ -760,7 +765,7 @@ export default {
       const uri =
         "https://uniback-summer7913.herokuapp.com/children/" +
         child_id +
-        "/childminder_reports/today";
+        "/childminder_reports/"+this.$route.params.date;
       axios
         .get(uri, {})
         .then((response) => {
@@ -781,12 +786,13 @@ export default {
       const uri =
         "https://uniback-summer7913.herokuapp.com/children/" +
         child_id +
-        "/parents_reports/today";
+        "/parents_reports/"+this.$route.params.date;
       axios
         .get(uri, {})
         .then((response) => {
           console.log("get_parents_report");
           console.log(response.data);
+          
           this.parents_report = response.data.report;
           this.is_locked = response.data.status;
           this.parents_report.bed_time = this.transform_date_to_hour(
@@ -823,7 +829,7 @@ export default {
         const uri =
           "https://uniback-summer7913.herokuapp.com/children/" +
           child_id +
-          "/parents_reports/today";
+          "/parents_reports/"+this.$route.params.date;
         axios
           .post(uri, {
             report: this.parents_report,
@@ -844,7 +850,7 @@ export default {
       else if(user.role=="childminder"){
         const uri = "https://uniback-summer7913.herokuapp.com/children/" +
           child_id +
-          "/childminder_reports/today";
+          "/childminder_reports/"+this.$route.params.date;
           axios
           .post(uri, {
             report: this.childminder_report,

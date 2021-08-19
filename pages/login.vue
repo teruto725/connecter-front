@@ -11,7 +11,10 @@
         <strong>ユーザ名</strong> か <strong>パスワード</strong>が間違っています
       </v-alert>
     </v-row>
-    <v-row justify="center" style="margin-top:50px;">
+    <v-row justify="center" align-content="center">
+      <v-img :src="require('@/assets/logo_login.png')" max-height="300" max-width="300"></v-img>
+    </v-row>
+    <v-row justify="center" style="margin-top:10px;">
        <v-form v-on:submit.prevent="doLogin" v-model="valid">
         <v-text-field  
           type="text" 
@@ -66,7 +69,7 @@ export default {
         console.log(user.id)
         this.$store.commit("users/login", user)
         if (user.role == "parent"){
-          this.$router.push("/parents/children_list")//親なら子供選択画面へ
+          this.$router.push("/parents/children_list/today")//親なら子供選択画面へ
         }
         else if (user.role == "childminder"){
           this.$router.push("/childminders/children_list")//child
