@@ -34,7 +34,7 @@
     <v-container style="width: 80%">
       <v-form v-on:submit.prevent="post_report">
         <FormTitle :title="'今朝の健康状態'" />
-        <v-row v-if="is_p">
+        <v-row v-if="is_p && is_locked === 'unlocked' ">
           <v-col>
             <v-text-field
               type="text"
@@ -89,7 +89,7 @@
                   </span>
                 </v-col>
               </v-row>
-              <v-row v-if=" parents_report.cold_symptom_description === '' || parents_report.is_cold_symptom === false " />
+              <v-row v-if=" parents_report.cold_symptoms_description === ''　|| parents_report.cold_symptoms_description === null || parents_report.is_cold_symptom === false " />
               <v-row v-else> 
                 <v-col>
                   連絡
@@ -99,7 +99,7 @@
             </v-alert>
           </v-col>
         </v-row>
-        <v-row col-6 v-if="is_p">
+        <v-row col-6 v-if="is_p && is_locked === 'unlocked' ">
           <v-col>
             <v-radio-group v-model="parents_report.is_cold_symptom">
               <v-radio label="体調がいい" :value="false"></v-radio>
@@ -107,7 +107,7 @@
             </v-radio-group>
           </v-col>
         </v-row>
-        <v-row v-if="parents_report.is_cold_symptom === true && is_p">
+        <v-row v-if="parents_report.is_cold_symptom === true && is_p && is_locked === 'unlocked' ">
           <v-col>
             <v-checkbox
               v-model="parents_report.is_cough"
@@ -138,7 +138,7 @@
           </v-col>
         </v-row>
         <FormTitle :title="'機嫌'" />
-        <span v-if="is_p">
+        <span v-if="is_p && is_locked === 'unlocked' ">
           <v-row >
             <v-col>
               <v-radio-group v-model="parents_report.mood">
@@ -179,7 +179,7 @@
                     </span>
                   </v-col>
                 </v-row>
-                <v-row v-if=" parents_report.mood_description === '' || parents_report.mood !== 2 " />
+                <v-row v-if=" parents_report.mood_description === '' || parents_report.mood_description === null || parents_report.mood !== 2 " />
                 <v-row v-else> 
                   <v-col>
                     連絡
@@ -189,6 +189,7 @@
               </v-alert>
             </v-col>
           </v-row>
+          <span v-if=" is_p === false && is_locked === 'unlocked' ">
           <v-row >
             <v-col>
               <v-radio-group v-model="childminder_report.mood">
@@ -198,7 +199,7 @@
               </v-radio-group>
             </v-col>
           </v-row>
-          <v-row v-if="childminder_report.mood === 2">
+          <v-row v-if="childminder_report.mood === 2 ">
             <v-col>
               <v-textarea
                 outlined
@@ -208,9 +209,41 @@
               </v-textarea>
             </v-col>
           </v-row>
+          </span>
+          <span v-else>
+            <v-row>
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保育士からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col > 機嫌：
+                    <span class="black--text">
+                      <span v-if=" childminder_report.mood === null "> 未入力 </span>
+                      <span v-else-if=" childminder_report.mood === 0 "> 良い </span>
+                      <span v-else-if=" childminder_report.mood === 1 "> 普通 </span>
+                      <span v-else> 悪い </span>
+                    </span>
+                  </v-col>
+                </v-row>
+                <v-row v-if=" childminder_report.mood_description === '' || childminder_report.mood_description === null || childminder_report.mood !== 2 " />
+                <v-row v-else> 
+                  <v-col>
+                    連絡
+                    <v-col class="black--text"> {{childminder_report.mood_description}} </v-col>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+            </v-row>
+          </span>
         </span>
         <FormTitle :title="'薬'" />
-        <span v-if="is_p">
+        <span v-if="is_p  && is_locked === 'unlocked' ">
           <v-row>
             <v-col>
               <v-radio-group v-model="parents_report.is_medicine">
@@ -249,7 +282,7 @@
                     </span>
                   </v-col>
                 </v-row>
-                <v-row v-if=" parents_report.medicine_description === '' || parents_report.is_medicine === false " />
+                <v-row v-if=" parents_report.medicine_description === '' || parents_report.medicine_description === null || parents_report.is_medicine === false " />
                 <v-row v-else> 
                   <v-col>
                     連絡
@@ -259,6 +292,7 @@
               </v-alert>
             </v-col>
           </v-row>
+          <span v-if=" is_p === false && is_locked === 'unlocked' ">
           <v-row>
             <v-col>
               <v-radio-group v-model="childminder_report.is_medicine">
@@ -267,9 +301,33 @@
               </v-radio-group>
             </v-col>   
           </v-row>
+          </span>
+          <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保育士からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col > お薬：
+                    <span class="black--text">
+                      <span v-if=" childminder_report.is_medicine === null "> 未入力 </span>
+                      <span v-else-if=" childminder_report.is_medicine === true "> 飲みました </span>
+                      <span v-else> 飲んでいません </span>
+                    </span>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+          </span>
         </span>
         <FormTitle :title="'食欲'" />
-        <span v-if="is_p">
+        <span v-if="is_p && is_locked === 'unlocked' ">
           <v-row>
             <v-col>
               <v-radio-group v-model="parents_report.appetite">
@@ -310,7 +368,7 @@
                     </span>
                   </v-col>
                 </v-row>
-                <v-row v-if=" parents_report.appetite_description === '' || parents_report.appetite !== 2 " />
+                <v-row v-if=" parents_report.appetite_description === '' || parents_report.appetite_description === null || parents_report.appetite !== 2 " />
                 <v-row v-else> 
                   <v-col>
                     連絡
@@ -320,6 +378,7 @@
               </v-alert>
             </v-col>
           </v-row>
+          <span v-if=" is_p === false && is_locked === 'unlocked' ">
           <v-row>
             <v-col>
               <v-radio-group v-model="childminder_report.appetite">
@@ -340,9 +399,40 @@
             </v-col>
           </v-row>
         </span>
-
+        <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保育士からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row >
+                  <v-col > 保育園での食欲：
+                    <span class="black--text">
+                      <span v-if=" childminder_report.appetite === null "> 未入力 </span>
+                      <span v-else-if=" childminder_report.appetite === 0 "> よく食べた </span>
+                      <span v-else-if=" childminder_report.appetite === 1 "> 普通 </span>
+                      <span v-else> あんまり </span>
+                    </span>
+                  </v-col>
+                </v-row>
+                <v-row v-if=" childminder_report.appetite_description === '' || childminder_report.appetite_description === null || childminder_report.appetite !== 2 " />
+                <v-row v-else> 
+                  <v-col>
+                    連絡
+                    <v-col class="black--text"> {{childminder_report.appetite_description}} </v-col>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+        </span>
+        </span>
         <FormTitle :title="'睡眠時間'" />
-        <span v-if="is_p">
+        <span v-if="is_p && is_locked === 'unlocked' ">
           <v-row>
             <v-col>
               <v-combobox
@@ -393,7 +483,7 @@
           </v-row>
         </span>
         <FormTitle :title="'お迎え'" />
-        <span v-if="is_p">
+        <span v-if="is_p && is_locked === 'unlocked' ">
           <v-combobox
             v-model="parents_report.pick_up_time"
             outlined
@@ -430,7 +520,7 @@
                 <v-row>
                   <v-col> お迎えの人：
                     <span class="black--text">
-                      <span v-if=" parents_report.pick_up_person === '' "> 未入力 </span>
+                      <span v-if=" parents_report.pick_up_person === '' || parents_report.pick_up_person === null "> 未入力 </span>
                       <span v-else> {{parents_report.pick_up_person}} </span>
                     </span>
                   </v-col>
@@ -440,7 +530,7 @@
           </v-row>
         </span>
         <FormTitle :title="'伝達事項'" />
-        <span v-if="is_p">
+        <span v-if="is_p && is_locked === 'unlocked' ">
           <v-row>
             <v-col>
               <v-textarea
@@ -465,7 +555,8 @@
                 <v-row>
                   <v-col >
                     <span class="black--text">
-                      <span v-if=" parents_report.notification === '' "> 特になし </span>
+                      <span v-if=" parents_report.notification === null "> 未入力 </span>
+                      <span v-else-if=" parents_report.notification === '' "> 特になし </span>
                       <span v-else> {{parents_report.notification}} </span>
                     </span>
                   </v-col>
@@ -473,6 +564,7 @@
               </v-alert>
             </v-col>
           </v-row>
+          <span v-if=" is_p === false && is_locked === 'unlocked' ">
           <v-row>
             <v-col>
               <v-textarea
@@ -483,9 +575,33 @@
               </v-textarea>
             </v-col>
           </v-row>
+          </span>
+          <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保育士からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col >
+                    <span class="black--text">
+                      <span v-if=" childminder_report.notification === null "> 未入力 </span>
+                      <span v-else-if=" childminder_report.notification === '' "> 特になし </span>
+                      <span v-else> {{childminder_report.notification}} </span>
+                    </span>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+          </span>
         </span>
         <FormTitle :title="'メッセージ'" />
-        <span v-if="is_p">
+        <span v-if="is_p && is_locked === 'unlocked' ">
           <v-row>
             <v-col>
               <v-textarea
@@ -510,7 +626,8 @@
                 <v-row>
                   <v-col >
                     <span class="black--text">
-                      <span v-if=" parents_report.description === '' "> 特になし </span>
+                      <span v-if=" parents_report.description === null "> 未入力 </span>
+                      <span v-else-if=" parents_report.description === '' "> 特になし </span>
                       <span v-else> {{parents_report.description}} </span>
                     </span>
                   </v-col>
@@ -518,6 +635,7 @@
               </v-alert>
             </v-col>
           </v-row>
+          <span v-if=" is_p === false && is_locked === 'unlocked'">
           <v-row>
             <v-col>
               <v-textarea
@@ -528,6 +646,30 @@
               </v-textarea>
             </v-col>
           </v-row>
+          </span>
+          <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保育士からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col >
+                    <span class="black--text">
+                      <span v-if=" childminder_report.description === null "> 未入力 </span>
+                      <span v-else-if=" childminder_report.description === '' "> 特になし </span>
+                      <span v-else> {{childminder_report.description}} </span>
+                    </span>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+          </span>
         </span>
         <v-row>
           <v-btn
@@ -572,16 +714,21 @@ export default {
       pickup_persons: ["お父さん", "お母さん", "叔父さん", "叔母さん", "おじいちゃん", "おばあちゃん", "その他"],
       is_p: false,
       success: false,
+<<<<<<< HEAD:pages/children/_id/child_report.vue
+      is_locked: 'unlocked',
+=======
       bodyTemperatureRules:[
         v => !!v || "体温が入力されていません",
         v => /^\d+\.\d+$/.test(v) || "数値を入力してください",
       ],
+>>>>>>> 42d93cc8177dae0716197e1406b6c0f9e7e35ff8:pages/children/_id/child_report/_date.vue
     };
   },
   created: function () {
     this.get_current_user();
     this.get_child();
     this.get_parents_report();
+    this.get_childminder_report();
   },
   methods: {
     get_current_user() {
@@ -647,6 +794,7 @@ export default {
           console.log(response.data);
           
           this.parents_report = response.data.report;
+          this.is_locked = response.data.status;
           this.parents_report.bed_time = this.transform_date_to_hour(
             this.parents_report.bed_time
           );
