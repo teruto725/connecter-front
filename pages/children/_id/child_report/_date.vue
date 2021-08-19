@@ -32,7 +32,7 @@
       <v-divider />
     </v-row>
     <v-container style="width: 80%">
-      <v-form v-on:submit.prevent="post_report">
+      <v-form >
         <FormTitle :title="'今朝の健康状態'" />
         <v-row v-if="is_p && is_locked === 'unlocked' ">
           <v-col>
@@ -671,23 +671,41 @@
           </v-row>
           </span>
         </span>
-        <v-row>
-          <v-btn
-            elevation="8"
-            dark
-            type="submit"
-            color="primary"
-            fixed
-            fab
-            right
-            x-large
-            bottom
-            style="bottom: 80px"
-            class="font-weight-bold"
-            >保存</v-btn
-          >
-        </v-row>
-    
+        <span v-if="(is_p === false && childminder_report.is_completed === false )|| (is_p === false && childminder_report.is_completed === null )">
+          <v-row>
+            <v-btn
+              @click="post_report(true)"
+              elevation="8"
+              dark
+              color="primary"
+              fixed
+              fab
+              right
+              x-large
+              bottom
+              style="bottom: 160px"
+              class="font-weight-bold"
+              >保存</v-btn
+            >
+          </v-row>
+        </span>
+          <v-row v-if="(childminder_report.is_completed === null && is_p == true) 
+          || (childminder_report.is_completed !== true && is_p == false)">
+            <v-btn
+              @click="post_report(false)"
+              elevation="8"
+              dark
+              color="primary"
+              fixed
+              fab
+              right
+              x-large
+              bottom
+              style="bottom: 80px"
+              class="font-weight-bold"
+              >送信</v-btn
+            >
+          </v-row>
       </v-form>
       <v-row>
         <v-col> <br></v-col>
@@ -714,14 +732,11 @@ export default {
       pickup_persons: ["お父さん", "お母さん", "叔父さん", "叔母さん", "おじいちゃん", "おばあちゃん", "その他"],
       is_p: false,
       success: false,
-<<<<<<< HEAD:pages/children/_id/child_report.vue
       is_locked: 'unlocked',
-=======
       bodyTemperatureRules:[
         v => !!v || "体温が入力されていません",
         v => /^\d+\.\d+$/.test(v) || "数値を入力してください",
       ],
->>>>>>> 42d93cc8177dae0716197e1406b6c0f9e7e35ff8:pages/children/_id/child_report/_date.vue
     };
   },
   created: function () {
@@ -812,7 +827,7 @@ export default {
         });
     },
 
-    post_report() {
+    post_report(is_blueprint) {
       const user = this.$store.state.users.current_user;
       const child_id = this.$route.params.id;
       this.parents_report.bed_time = this.transform_hour_to_date(
@@ -848,17 +863,25 @@ export default {
           });
       }
       else if(user.role=="childminder"){
+        console.log("childminder_post_report")
+        if (is_blueprint){
+          this.childminder_report.is_completed = 0
+        }
+        else{
+          this.childminder_report.is_completed = 1
+        }
+        console.log(this.childminder_report)
         const uri = "https://uniback-summer7913.herokuapp.com/children/" +
           child_id +
-          "/childminder_reports/"+this.$route.params.date;
+          "/childminder_reports/today";
           axios
           .post(uri, {
             report: this.childminder_report,
             user_id: user.id,
           })
           .then((response) => {
-            console.log("post childminders preport");
-            console.log(response.data);
+
+            console.log("success");
             this.get_parents_report()
             this.get_childminder_report()
             this.success = true
@@ -873,11 +896,8 @@ export default {
     transform_hour_to_date(hour) {
       if (hour != null) {
         let date = new Date("Thu, 01 May 2008 02:00:00");
-        console.log("hour to date");
-        console.log(hour);
         date.setHours(hour);
         let date_s = date.getHours() + ":00:00.000+09:00";
-        console.log(date_s);
         return date_s;
       } else {
         return null;

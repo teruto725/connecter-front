@@ -11,7 +11,7 @@
           color="primary"
           light
           outlined
-          :to="'/children/' + child.child.id + '/child_report'"
+          :to="'/children/' + child.child.id + '/child_report/today'"
         >
           <v-container>
             <v-row>
@@ -39,14 +39,6 @@ export default {
     return {
       display_children: [],
       children: [
-        {
-          child: { id: 1, name: "なると", class: "ひまわり組" },
-          childminders_report: { is_completed: true, notification: "www" },
-        },
-        {
-          child: { id: 2, name: "さすけ", class: "ひまわり組" },
-          childminders_report: { notification: "www" },
-        },
       ],
     };
   },
@@ -77,11 +69,15 @@ export default {
         .then((response) => {
           this.children = response.data;
           console.log(this.children);
+          
         })
         .catch((error) => {
           this.$router.push("/login");
         });
     },
+    create_display_children(){
+      
+    }
   },
 };
 </script>

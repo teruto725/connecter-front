@@ -3,13 +3,13 @@
     <v-app-bar dark fixed app color="primary">
       <v-toolbar-title class="font-h1">Unisys連絡帳</v-toolbar-title>
       <v-spacer/>
-      <v-chip @click="logout()" label outlined v-if="$store.state.users.current_user.role=='childminder'">
+      <v-chip  label outlined v-if="$store.state.users.current_user.role=='childminder'">
         <v-icon left>
           mdi-account
         </v-icon>
           保育士さん画面
       </v-chip>
-      <v-chip @click="logout()" label outlined v-if="$store.state.users.current_user.role=='parent'">
+      <v-chip  label outlined v-if="$store.state.users.current_user.role=='parent'">
         <v-icon left>
           mdi-account
         </v-icon>
