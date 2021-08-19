@@ -306,6 +306,25 @@
               </v-alert>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col>
+              <v-radio-group v-model="childminders_report.appetite">
+                <v-radio label="よく食べた" :value="0"></v-radio>
+                <v-radio label="普通" :value="1"></v-radio>
+                <v-radio label="あんまり食べなかった" :value="2"></v-radio>
+              </v-radio-group>
+            </v-col>
+          </v-row>
+          <v-row v-if="childminders_report.appetite === 2">
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="childminders_report.appetite_description"
+                label="理由等"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
         </span>
 
         <FormTitle :title="'睡眠時間'" />
