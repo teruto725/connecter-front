@@ -1,5 +1,18 @@
 <template>
   <v-container>
+    <v-alert
+      text
+      type="success"
+      elevation="2"
+      dismissible
+      v-model="success"
+      outlined
+      fixed
+      style="top: 80px"
+      width="100%"
+    >
+      保存完了しました！
+    </v-alert>
     <v-row>
       <h2>{{ childminders_report.day }}</h2>
     </v-row>
@@ -250,27 +263,21 @@ export default {
       ],
       pickup_persons: ["父", "母", "叔父", "叔母", "その他"],
       is_p: false,
+      success: false,
     };
   },
   created: function () {
     //
     //
-    this.check_login();
-    this.get_child();
     this.get_current_user();
+    this.get_child();
     this.get_parents_report();
   },
   watch: {},
   methods: {
-    check_login() {
-      const user = this.$store.state.users.current_user;
-      console.log(user)
-      if (typeof user=== "undefine") {
-        this.$router.push("/login");
-      } 
-    },
     get_current_user() {
       const user = this.$store.state.users.current_user;
+      console.log("login")
       console.log(user);
       if (user.role == "parent") {
         this.is_p = true;
@@ -303,19 +310,29 @@ export default {
         "https://uniback-summer7913.herokuapp.com/children/" +
         child_id +
         "/childminders_reports/today";
-      axios.get(
-        uri,
-        {}
-          .then((response) => {
-            console.log("get_parents_report");
-            console.log(response.data);
-            this.childminders_report = response.data.report;
-          })
-          .catch((error) => {
-            console.log(error);
-            this.error = true;
-          })
-      );
+      axios
+        .get(uri, {})
+        .then((response) => {
+          console.log("get_parents_report");
+          console.log(response.data);
+          this.parents_report = response.data.report;
+          this.parents_report.bed_time = this.transform_date_to_hour(
+            this.parents_report.bed_time
+          );
+          this.parents_report.wake_up_time = this.transform_date_to_hour(
+            this.parents_report.wake_up_time
+          );
+          this.parents_report.pick_up_time = this.transform_date_to_hour(
+            this.parents_report.pick_up_time
+          );
+          console.log(this.parents_report);
+          console.log("done");
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log("error");
+          this.error = true;
+        });
     },
     get_parents_report() {
       const child_id = this.$route.params.id;
@@ -376,12 +393,34 @@ export default {
             console.log("post parents preport");
             console.log(response.data[0]);
             this.get_parents_report()
+            this.success=true
           })
           .catch((error) => {
             console.log(error);
             console.log("error");
             this.error = true;
           });
+      }
+      else if(user.role=="childminder"){
+        const uri = "https://uniback-summer7913.herokuapp.com/children/" +
+          child_id +
+          "/parents_reports/today";
+          axios
+          .post(uri, {
+            report: this.childminders_report,
+            user_id: user.id,
+          })
+          .then((response) => {
+            console.log("post childminders preport");
+            console.log(response.data[0]);
+            this.get_childminders_report()
+            this.success = true
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log("error");
+            this.error = true;
+          });        
       }
     },
     transform_hour_to_date(hour) {

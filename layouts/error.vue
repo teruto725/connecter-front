@@ -1,10 +1,7 @@
 <template>
   <v-app dark>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
-    </h1>
-    <h1 v-else>
-      {{ otherError }}
+    <h1 >
+      エラーが発生しました。お手数ですがログインし直してください
     </h1>
     <NuxtLink to="/login">
       ログインに戻る
