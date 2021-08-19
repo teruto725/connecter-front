@@ -19,6 +19,9 @@
     <v-main>
       <v-container>
         <Nuxt />
+              <v-row>
+        <v-col> <br><br></v-col>
+      </v-row>
       </v-container>
     </v-main>
     <v-bottom-navigation style="background-color:#ededd5;" width="100%" fixed color="primary" v-if="$store.state.users.current_user.role == 'parent'">

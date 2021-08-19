@@ -77,7 +77,9 @@ export default {
           secondary: "#dda0dd",
           error: "#ff4500",
           background: "#f5f5dc",
-          success: colors.green.accent3,
+          success: "#7CB342",
+          hoikushi: "#FF7043",
+          hogosya: "#43A047"
         }
       }
     },

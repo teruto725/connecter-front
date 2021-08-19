@@ -55,6 +55,9 @@ export default {
       ],
     };
   },
+  created: function(){
+    this.logout()
+  },
   methods: {
     doLogin() {
       const uri = "https://uniback-summer7913.herokuapp.com/login";
@@ -82,6 +85,9 @@ export default {
         this.error = true;
         this.error_message = true;
       });
+    },
+    logout(){  
+      this.$store.commit("users/logout")
     }
   }
 }

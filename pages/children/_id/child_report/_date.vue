@@ -1,18 +1,6 @@
 <template>
   <v-container>
-    <v-alert
-      text
-      type="success"
-      elevation="2"
-      dismissible
-      v-model="success"
-      outlined
-      fixed
-      style="top: 80px"
-      width="100%"
-    >
-      保存完了しました！
-    </v-alert>
+
     <v-row>
       <h2>{{ childminder_report.day }}</h2>
     </v-row>
@@ -47,9 +35,9 @@
         </v-row>
         <v-row v-else>
           <v-col>
-            <v-alert color="primary" outlined border="left">
+            <v-alert color="hogosya" outlined border="left">
               <v-row>
-                <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                <v-chip color="hogosya" outlined label right style="margin-top:-5px;margin-left:-5px;">
                   <v-icon left> mdi-account-outline </v-icon> 
                   保護者からの記入欄 
                 </v-chip>
@@ -162,9 +150,9 @@
         <span v-else>
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hogosya" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hogosya" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保護者からの記入欄 
                   </v-chip>
@@ -213,9 +201,9 @@
           <span v-else-if=" childminder_report.is_completed === true">
             <v-row>
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hoikushi" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hoikushi" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保育士からの記入欄 
                   </v-chip>
@@ -266,9 +254,9 @@
         <span v-else>
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hogosya" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hogosya" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保護者からの記入欄 
                   </v-chip>
@@ -305,9 +293,9 @@
           <span v-else-if=" childminder_report.is_completed === true">
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hoikushi" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hoikushi" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保育士からの記入欄 
                   </v-chip>
@@ -351,9 +339,9 @@
         <span v-else>
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hogosya" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hogosya" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保護者からの記入欄 
                   </v-chip>
@@ -402,9 +390,9 @@
         <span v-else-if=" childminder_report.is_completed === true">
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hoikushi" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hoikushi" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保育士からの記入欄 
                   </v-chip>
@@ -457,9 +445,9 @@
         <span v-else>
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hogosya" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hogosya" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保護者からの記入欄 
                   </v-chip>
@@ -502,9 +490,9 @@
         <span v-else>
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hogosya" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hogosya" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保護者からの記入欄 
                   </v-chip>
@@ -545,9 +533,9 @@
         <span v-else>
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hogosya" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hogosya" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保護者からの記入欄 
                   </v-chip>
@@ -579,9 +567,9 @@
         <span v-else-if=" childminder_report.is_completed === true">
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hoikushi" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hoikushi" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保育士からの記入欄 
                   </v-chip>
@@ -616,9 +604,9 @@
         <span v-else>
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hogosya" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hogosya" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保護者からの記入欄 
                   </v-chip>
@@ -650,9 +638,9 @@
         <span v-else-if=" childminder_report.is_completed === true">
           <v-row >
             <v-col>
-              <v-alert color="primary" outlined border="left">
+              <v-alert color="hoikushi" outlined border="left">
                 <v-row>
-                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-chip color="hoikushi" outlined label right style="margin-top:-5px;margin-left:-5px;">
                     <v-icon left> mdi-account-outline </v-icon> 
                     保育士からの記入欄 
                   </v-chip>
@@ -706,10 +694,27 @@
               >送信</v-btn
             >
           </v-row>
+
       </v-form>
-      <v-row>
-        <v-col> <br></v-col>
-      </v-row>
+          <v-row v-if="success" widht="100px">
+            <v-col>
+            <v-btn
+              @click="close_message()"
+              elevation="8"
+              dark
+              color="success"
+              fixed
+              block
+              x-large
+              bottom
+              small
+              style="bottom: 90px; right:130px;"
+              class="font-weight-bold"
+              >
+              <v-spacer/>保存できました<v-spacer/><v-icon>mdi-close</v-icon></v-btn
+            >
+            </v-col>
+          </v-row>
     </v-container>
   </v-container>
 </template>
@@ -882,7 +887,12 @@ export default {
             console.log("success");
             this.get_parents_report()
             this.get_childminder_report()
-            this.success = true
+            if (is_blueprint){
+              this.success = true
+            }
+            else{
+              this.$router.push("/childminders/children_list")
+            }
           })
           .catch((error) => {
             console.log(error);
@@ -908,6 +918,9 @@ export default {
       } else {
         return null;
       }
+    },
+    close_message() {
+      this.success= false
     },
   },
 };
