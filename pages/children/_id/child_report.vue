@@ -41,6 +41,7 @@
               outlined
               label="体温"
               v-model="parents_report.body_temperature"
+              :rules="bodyTemperatureRules"
             />
           </v-col>
         </v-row>
@@ -571,6 +572,10 @@ export default {
       pickup_persons: ["お父さん", "お母さん", "叔父さん", "叔母さん", "おじいちゃん", "おばあちゃん", "その他"],
       is_p: false,
       success: false,
+      bodyTemperatureRules:[
+        v => !!v || "体温が入力されていません",
+        v => /^\d+\.\d+$/.test(v) || "数値を入力してください",
+      ],
     };
   },
   created: function () {
