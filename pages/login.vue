@@ -11,7 +11,10 @@
         <strong>ユーザ名</strong> か <strong>パスワード</strong>が間違っています
       </v-alert>
     </v-row>
-    <v-row justify="center" style="margin-top:50px;">
+    <v-row justify="center" align-content="center">
+      <v-img :src="require('@/assets/logo_login.png')" max-height="300" max-width="300"></v-img>
+    </v-row>
+    <v-row justify="center" style="margin-top:10px;">
        <v-form v-on:submit.prevent="doLogin" v-model="valid">
         <v-text-field  
           type="text" 
