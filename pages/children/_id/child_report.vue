@@ -55,7 +55,7 @@
               </v-row>
               <v-row>
                 <v-col > 体温：
-                  <span v-if=" parents_report.body_tempreture === null " class="black--text"> 未入力 </span>
+                  <span v-if=" parents_report.body_temperature === null " class="black--text"> 未入力 </span>
                   <span v-else class="black--text"> {{parents_report.body_temperature}}度 </span>
                 </v-col>
                 <v-col> 体調：
@@ -568,7 +568,8 @@ export default {
         is_medicine: true,
         is_completed: true,
       },
-      parents_report: {},
+      parents_report: {
+      },
       error: false,
       child: {
       },
@@ -628,19 +629,19 @@ export default {
       axios
         .get(uri, {})
         .then((response) => {
-          console.log("get_parents_report");
+          console.log("get_childminder_report");
           console.log(response.data);
-          this.parents_report = response.data.report;
-          this.parents_report.bed_time = this.transform_date_to_hour(
-            this.parents_report.bed_time
+          this.childminder_report = response.data.childminder_report;
+          this.childminder_report.bed_time = this.transform_date_to_hour(
+            this.childminder_report.bed_time
           );
-          this.parents_report.wake_up_time = this.transform_date_to_hour(
-            this.parents_report.wake_up_time
+          this.childminder_report.wake_up_time = this.transform_date_to_hour(
+            this.childminder_report.wake_up_time
           );
-          this.parents_report.pick_up_time = this.transform_date_to_hour(
-            this.parents_report.pick_up_time
+          this.childminder_report.pick_up_time = this.transform_date_to_hour(
+            this.childminder_report.pick_up_time
           );
-          console.log(this.parents_report);
+          console.log(this.childminder_report);
           console.log("done");
         })
         .catch((error) => {
@@ -674,8 +675,6 @@ export default {
           console.log("done");
         })
         .catch((error) => {
-          console.log(error);
-          console.log("error");
           this.error = true;
         });
     },
@@ -683,7 +682,6 @@ export default {
     post_report() {
       const user = this.$store.state.users.current_user;
       const child_id = this.$route.params.id;
-      console.log("fdas");
       this.parents_report.bed_time = this.transform_hour_to_date(
         this.parents_report.bed_time
       );
@@ -727,7 +725,7 @@ export default {
           })
           .then((response) => {
             console.log("post childminders preport");
-            console.log(response.data[0]);
+            console.log(response.data);
             this.get_childminder_report()
             this.success = true
           })
