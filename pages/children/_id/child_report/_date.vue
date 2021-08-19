@@ -544,7 +544,7 @@
             >保存</v-btn
           >
         </v-row>
-
+    
       </v-form>
       <v-row>
         <v-col> <br></v-col>
@@ -574,13 +574,10 @@ export default {
     };
   },
   created: function () {
-    //
-    //
     this.get_current_user();
     this.get_child();
     this.get_parents_report();
   },
-  watch: {},
   methods: {
     get_current_user() {
       const user = this.$store.state.users.current_user;
@@ -616,7 +613,7 @@ export default {
       const uri =
         "https://uniback-summer7913.herokuapp.com/children/" +
         child_id +
-        "/childminder_reports/today";
+        "/childminder_reports/"+this.$route.params.date;
       axios
         .get(uri, {})
         .then((response) => {
@@ -637,12 +634,13 @@ export default {
       const uri =
         "https://uniback-summer7913.herokuapp.com/children/" +
         child_id +
-        "/parents_reports/today";
+        "/parents_reports/"+this.$route.params.date;
       axios
         .get(uri, {})
         .then((response) => {
           console.log("get_parents_report");
           console.log(response.data);
+          
           this.parents_report = response.data.report;
           this.parents_report.bed_time = this.transform_date_to_hour(
             this.parents_report.bed_time
@@ -678,7 +676,7 @@ export default {
         const uri =
           "https://uniback-summer7913.herokuapp.com/children/" +
           child_id +
-          "/parents_reports/today";
+          "/parents_reports/"+this.$route.params.date;
         axios
           .post(uri, {
             report: this.parents_report,
@@ -699,7 +697,7 @@ export default {
       else if(user.role=="childminder"){
         const uri = "https://uniback-summer7913.herokuapp.com/children/" +
           child_id +
-          "/childminder_reports/today";
+          "/childminder_reports/"+this.$route.params.date;
           axios
           .post(uri, {
             report: this.childminder_report,

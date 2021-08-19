@@ -11,7 +11,7 @@
       justify="center"
       >
      <v-col>
-       <v-btn color="primary" block outlined :to="'/children/'+child.id+'/child_report'">{{child.name}}</v-btn>
+       <v-btn color="primary" block outlined :to="'/children/'+child.id+'/child_report/'+$route.params.date">{{child.name}}</v-btn>
      </v-col>  
     </v-row>
   </v-container>
@@ -46,7 +46,7 @@ export default {
     get_children(){ 
       const user = this.$store.state.users.current_user;
       console.log(user)
-      const uri ="https://uniback-summer7913.herokuapp.com/parents/"+user.id+"/children";
+      const uri ="https://uniback-summer7913.herokuapp.com/parents/"+user.id+"/children/";
       axios.get(
         uri, 
         {}   
@@ -56,7 +56,7 @@ export default {
         if (children.length == 0){
         }
         else if(children.length == 1){//一人ならreportへ直接飛ぶ
-          this.$router.push("/children/"+children[0].id+"/child_report")
+          this.$router.push("/children/"+children[0].id+"/child_report/"+this.$route.params.date)
         }
         else{
           this.children = children
