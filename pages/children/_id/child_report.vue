@@ -558,15 +558,6 @@ export default {
   data() {
     return {
       childminder_report: {
-        day: "2021/3/3",
-        description: "自由記述",
-        notification: "",
-        appetite: 1,
-        appetite_description: "食欲自由機銃",
-        mood: 2,
-        mood_description: "機嫌自由記述",
-        is_medicine: true,
-        is_completed: true,
       },
       parents_report: {
       },
@@ -632,15 +623,6 @@ export default {
           console.log("get_childminder_report");
           console.log(response.data);
           this.childminder_report = response.data.childminder_report;
-          this.childminder_report.bed_time = this.transform_date_to_hour(
-            this.childminder_report.bed_time
-          );
-          this.childminder_report.wake_up_time = this.transform_date_to_hour(
-            this.childminder_report.wake_up_time
-          );
-          this.childminder_report.pick_up_time = this.transform_date_to_hour(
-            this.childminder_report.pick_up_time
-          );
           console.log(this.childminder_report);
           console.log("done");
         })
@@ -726,6 +708,7 @@ export default {
           .then((response) => {
             console.log("post childminders preport");
             console.log(response.data);
+            this.get_parents_report()
             this.get_childminder_report()
             this.success = true
           })
