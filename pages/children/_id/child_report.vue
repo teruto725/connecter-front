@@ -33,7 +33,7 @@
     </v-row>
     <v-container style="width: 80%">
       <v-form v-on:submit.prevent="post_report">
-        <FormTitle :title="'体調'" />
+        <FormTitle :title="'今朝の健康状態'" />
         <v-row v-if="is_p">
           <v-col>
             <v-text-field
@@ -46,14 +46,59 @@
         </v-row>
         <v-row v-else>
           <v-col>
-            <v-card outlined>
-              <v-card-text>
-                <v-row style="margin: 2px"> </v-row>
-              </v-card-text>
-            </v-card>
+            <v-alert color="primary" outlined border="left">
+              <v-row>
+                <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                  <v-icon left> mdi-account-outline </v-icon> 
+                  保護者からの記入欄 
+                </v-chip>
+              </v-row>
+              <v-row>
+                <v-col > 体温：
+                  <span v-if=" parents_report.body_tempreture === null " class="black--text"> 未入力 </span>
+                  <span v-else class="black--text"> {{parents_report.body_temperature}}度 </span>
+                </v-col>
+                <v-col> 体調：
+                  <span class="black--text">
+                    <span v-if=" parents_report.is_cold_symptom === null "> 未入力 </span>
+                    <span v-else-if=" parents_report.is_cold_symptom === false "> 良い </span>
+                    <span v-else> 悪い </span> 
+                  </span>
+                </v-col>
+              </v-row>
+              <v-row v-if=" parents_report.is_cough === null && parents_report.is_snot === null || parents_report.is_cold_symptom === false" />
+              <v-row v-else>
+                <v-col> 症状：
+                  <span class="black--text">
+                    <span v-if=" parents_report.is_cough === true && parents_report.is_snot === true "> 咳、鼻水 </span>
+                    <span v-else-if=" parents_report.is_cough === true "> 咳 </span>
+                    <span v-else-if=" parents_report.is_snot "> 鼻水 </span>
+                    <span v-else> その他 </span>
+                  </span>
+                </v-col>
+              </v-row>
+              <v-row v-if=" parents_report.is_taste === null && parents_report.is_smell === null || parents_report.is_cold_symptom === false" />
+              <v-row v-else>
+                <v-col v-if=" parents_report.is_taste === true || parents_report.is_smell === true "> 
+                  新型コロナウィルスの疑い：
+                  <span class="black--text">
+                    <v-col v-if=" parents_report.is_taste === true && parents_report.is_smell === true "> 味覚・嗅覚異常あり </v-col>
+                    <v-col v-else-if=" parents_report.is_taste === true "> 味覚異常あり </v-col>
+                    <v-col v-else> 嗅覚異常あり </v-col>
+                  </span>
+                </v-col>
+              </v-row>
+              <v-row v-if=" parents_report.cold_symptom_description === '' || parents_report.is_cold_symptom === false " />
+              <v-row v-else> 
+                <v-col>
+                  連絡
+                  <v-col class="black--text"> {{parents_report.cold_symptoms_description}} </v-col>
+                </v-col>
+              </v-row>
+            </v-alert>
           </v-col>
         </v-row>
-        <v-row col-6>
+        <v-row col-6 v-if="is_p">
           <v-col>
             <v-radio-group v-model="parents_report.is_cold_symptom">
               <v-radio label="体調がいい" :value="false"></v-radio>
@@ -61,7 +106,7 @@
             </v-radio-group>
           </v-col>
         </v-row>
-        <v-row v-if="parents_report.is_cold_symptom === true">
+        <v-row v-if="parents_report.is_cold_symptom === true && is_p">
           <v-col>
             <v-checkbox
               v-model="parents_report.is_cough"
@@ -92,127 +137,397 @@
           </v-col>
         </v-row>
         <FormTitle :title="'機嫌'" />
-        <v-row>
-          <v-col>
-            <v-radio-group v-model="parents_report.mood">
-              <v-radio label="機嫌がいい" :value="0"></v-radio>
-              <v-radio label="普通" :value="1"></v-radio>
-              <v-radio label="機嫌が悪い" :value="2"></v-radio>
-            </v-radio-group>
-          </v-col>
-        </v-row>
-        <v-row v-if="parents_report.mood === 2">
-          <v-col>
-            <v-textarea
-              outlined
-              v-model="parents_report.mood_description"
-              label="理由等"
-            >
-            </v-textarea>
-          </v-col>
-        </v-row>
-
+        <span v-if="is_p">
+          <v-row >
+            <v-col>
+              <v-radio-group v-model="parents_report.mood">
+                <v-radio label="機嫌が良い" :value="0"></v-radio>
+                <v-radio label="普通" :value="1"></v-radio>
+                <v-radio label="機嫌が悪い" :value="2"></v-radio>
+              </v-radio-group>
+            </v-col>
+          </v-row>
+          <v-row v-if="parents_report.mood === 2">
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="parents_report.mood_description"
+                label="理由等"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </span>
+        <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保護者からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col > 機嫌：
+                    <span class="black--text">
+                      <span v-if=" parents_report.mood === null "> 未入力 </span>
+                      <span v-else-if=" parents_report.mood === 0 "> 良い </span>
+                      <span v-else-if=" parents_report.mood === 1 "> 普通 </span>
+                      <span v-else> 悪い </span>
+                    </span>
+                  </v-col>
+                </v-row>
+                <v-row v-if=" parents_report.mood_description === '' || parents_report.mood !== 2 " />
+                <v-row v-else> 
+                  <v-col>
+                    連絡
+                    <v-col class="black--text"> {{parents_report.mood_description}} </v-col>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+          <v-row >
+            <v-col>
+              <v-radio-group v-model="childminders_report.mood">
+                <v-radio label="機嫌が良い" :value="0"></v-radio>
+                <v-radio label="普通" :value="1"></v-radio>
+                <v-radio label="機嫌が悪い" :value="2"></v-radio>
+              </v-radio-group>
+            </v-col>
+          </v-row>
+          <v-row v-if="childminders_report.mood === 2">
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="childminders_report.mood_description"
+                label="理由等"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </span>
         <FormTitle :title="'薬'" />
-        <v-row>
-          <v-col>
-            <v-radio-group v-model="parents_report.is_medicine">
-              <v-radio label="薬等なし" :value="false"></v-radio>
-              <v-radio label="薬あり" :value="true"></v-radio>
-            </v-radio-group>
-          </v-col>
-        </v-row>
-        <v-row v-if="parents_report.is_medicine === true">
-          <v-col>
-            <v-textarea
-              outlined
-              v-model="parents_report.medicine_description"
-              label="理由等"
-            >
-            </v-textarea>
-          </v-col>
-        </v-row>
-
+        <span v-if="is_p">
+          <v-row>
+            <v-col>
+              <v-radio-group v-model="parents_report.is_medicine">
+                <v-radio label="薬等なし" :value="false"></v-radio>
+                <v-radio label="薬あり" :value="true"></v-radio>
+              </v-radio-group>
+            </v-col>
+          </v-row>
+          <v-row v-if="parents_report.is_medicine === true">
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="parents_report.medicine_description"
+                label="理由等"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </span>
+        <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保護者からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col > 薬の有無：
+                    <span class="black--text">
+                      <span v-if=" parents_report.is_medicine === null "> 未入力 </span>
+                      <span v-else-if=" parents_report.is_medicine === true "> あり </span>
+                      <span v-else> なし </span>
+                    </span>
+                  </v-col>
+                </v-row>
+                <v-row v-if=" parents_report.medicine_description === '' || parents_report.is_medicine === false " />
+                <v-row v-else> 
+                  <v-col>
+                    連絡
+                    <v-col class="black--text"> {{parents_report.medicine_description}} </v-col>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-radio-group v-model="childminders_report.is_medicine">
+                <v-radio label="お薬飲みました" :value="true"></v-radio>
+                <v-radio label="まだ飲んでいません" :value="false"></v-radio>
+              </v-radio-group>
+            </v-col>   
+          </v-row>
+        </span>
         <FormTitle :title="'食欲'" />
-        <v-row>
-          <v-col>
-            <v-radio-group v-model="parents_report.appetite">
-              <v-radio label="よく食べた" :value="0"></v-radio>
-              <v-radio label="普通" :value="1"></v-radio>
-              <v-radio label="あんまり食べなかった" :value="2"></v-radio>
-            </v-radio-group>
-          </v-col>
-        </v-row>
-        <v-row v-if="parents_report.appetite === 2">
-          <v-col>
-            <v-textarea
-              outlined
-              v-model="parents_report.appetite_description"
-              label="理由等"
-            >
-            </v-textarea>
-          </v-col>
-        </v-row>
+        <span v-if="is_p">
+          <v-row>
+            <v-col>
+              <v-radio-group v-model="parents_report.appetite">
+                <v-radio label="よく食べた" :value="0"></v-radio>
+                <v-radio label="普通" :value="1"></v-radio>
+                <v-radio label="あんまり食べなかった" :value="2"></v-radio>
+              </v-radio-group>
+            </v-col>
+          </v-row>
+          <v-row v-if="parents_report.appetite === 2">
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="parents_report.appetite_description"
+                label="理由等"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </span>
+        <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保護者からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row >
+                  <v-col > 朝の食欲：
+                    <span class="black--text">
+                      <span v-if=" parents_report.appetite === null "> 未入力 </span>
+                      <span v-else-if=" parents_report.appetite === 0 "> よく食べた </span>
+                      <span v-else-if=" parents_report.appetite === 1 "> 普通 </span>
+                      <span v-else> あんまり </span>
+                    </span>
+                  </v-col>
+                </v-row>
+                <v-row v-if=" parents_report.appetite_description === '' || parents_report.appetite !== 2 " />
+                <v-row v-else> 
+                  <v-col>
+                    連絡
+                    <v-col class="black--text"> {{parents_report.appetite_description}} </v-col>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-radio-group v-model="childminders_report.appetite">
+                <v-radio label="よく食べた" :value="0"></v-radio>
+                <v-radio label="普通" :value="1"></v-radio>
+                <v-radio label="あんまり食べなかった" :value="2"></v-radio>
+              </v-radio-group>
+            </v-col>
+          </v-row>
+          <v-row v-if="childminders_report.appetite === 2">
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="childminders_report.appetite_description"
+                label="理由等"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </span>
 
         <FormTitle :title="'睡眠時間'" />
-
-        <v-row>
-          <v-col>
-            <v-combobox
-              v-model="parents_report.bed_time"
-              outlined
-              :items="times"
-              label="就寝時間"
-            >
-            </v-combobox>
-          </v-col>
-          <v-col>
-            <v-combobox
-              v-model="parents_report.wake_up_time"
-              outlined
-              :items="times"
-              label="起床時間"
-            >
-            </v-combobox>
-          </v-col>
-        </v-row>
+        <span v-if="is_p">
+          <v-row>
+            <v-col>
+              <v-combobox
+                v-model="parents_report.bed_time"
+                outlined
+                :items="times"
+                label="就寝時間"
+              >
+              </v-combobox>
+            </v-col>
+            <v-col>
+              <v-combobox
+                v-model="parents_report.wake_up_time"
+                outlined
+                :items="times"
+                label="起床時間"
+              >
+              </v-combobox>
+            </v-col>
+          </v-row>
+        </span>
+        <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保護者からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col > 就寝：
+                    <span class="black--text">
+                      <span v-if=" parents_report.bed_time === null "> 未入力 </span>
+                      <span v-else> {{parents_report.bed_time}}時 </span>
+                    </span>
+                  </v-col>
+                  <v-col > 起床：
+                    <span class="black--text">
+                      <span v-if=" parents_report.wake_up_time === null "> 未入力 </span>
+                      <span v-else> {{parents_report.wake_up_time}}時 </span>
+                    </span>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+        </span>
         <FormTitle :title="'お迎え'" />
-        <v-combobox
-          v-model="parents_report.pick_up_time"
-          outlined
-          :items="times"
-          label="時間"
-        >
-        </v-combobox>
-        <v-combobox
-          v-model="parents_report.pick_up_person"
-          outlined
-          :items="pickup_persons"
-          label="お迎えに来るひと"
-        >
-        </v-combobox>
+        <span v-if="is_p">
+          <v-combobox
+            v-model="parents_report.pick_up_time"
+            outlined
+            :items="times"
+            label="時間"
+          >
+          </v-combobox>
+          <v-combobox
+            v-model="parents_report.pick_up_person"
+            outlined
+            :items="pickup_persons"
+            label="お迎えに来る人"
+          >
+          </v-combobox>
+        </span>
+        <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保護者からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col > 時間：
+                    <span class="black--text">
+                      <span v-if=" parents_report.pick_up_time === null "> 未入力 </span>
+                      <span v-else> {{parents_report.pick_up_time}}時 </span>
+                    </span>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col> お迎えの人：
+                    <span class="black--text">
+                      <span v-if=" parents_report.pick_up_person === '' "> 未入力 </span>
+                      <span v-else> {{parents_report.pick_up_person}} </span>
+                    </span>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+        </span>
         <FormTitle :title="'伝達事項'" />
-        <v-row>
-          <v-col>
-            <v-textarea
-              outlined
-              v-model="parents_report.notification"
-              label="伝達事項・留意点など"
-            >
-            </v-textarea>
-          </v-col>
-        </v-row>
+        <span v-if="is_p">
+          <v-row>
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="parents_report.notification"
+                label="伝達事項・留意点など"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </span>
+        <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保護者からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col >
+                    <span class="black--text">
+                      <span v-if=" parents_report.notification === '' "> 特になし </span>
+                      <span v-else> {{parents_report.notification}} </span>
+                    </span>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="childminders_report.notification"
+                label="伝達事項・留意点など"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </span>
         <FormTitle :title="'メッセージ'" />
-        <v-row>
-          <v-col>
-            <v-textarea
-              outlined
-              v-model="parents_report.description"
-              label="メッセージ・自由記述"
-            >
-            </v-textarea>
-          </v-col>
-        </v-row>
-
+        <span v-if="is_p">
+          <v-row>
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="parents_report.description"
+                label="メッセージ・自由記述"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </span>
+        <span v-else>
+          <v-row >
+            <v-col>
+              <v-alert color="primary" outlined border="left">
+                <v-row>
+                  <v-chip color="primary" outlined label right style="margin-top:-5px;margin-left:-5px;">
+                    <v-icon left> mdi-account-outline </v-icon> 
+                    保護者からの記入欄 
+                  </v-chip>
+                </v-row>
+                <v-row>
+                  <v-col >
+                    <span class="black--text">
+                      <span v-if=" parents_report.description === '' "> 特になし </span>
+                      <span v-else> {{parents_report.description}} </span>
+                    </span>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-textarea
+                outlined
+                v-model="childminders_report.description"
+                label="メッセージ・自由記述"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </span>
         <v-row>
           <v-btn
             elevation="8"
@@ -261,7 +576,7 @@ export default {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
         20, 21, 22, 23, 24,
       ],
-      pickup_persons: ["父", "母", "叔父", "叔母", "その他"],
+      pickup_persons: ["お父さん", "お母さん", "叔父さん", "叔母さん", "おじいちゃん", "おばあちゃん", "その他"],
       is_p: false,
       success: false,
     };
