@@ -14,7 +14,7 @@
       保存完了しました！
     </v-alert>
     <v-row>
-      <h2>{{ childminders_report.day }}</h2>
+      <h2>{{ childminder_report.day }}</h2>
     </v-row>
     <v-row> </v-row>
     <v-row justify="center">
@@ -190,18 +190,18 @@
           </v-row>
           <v-row >
             <v-col>
-              <v-radio-group v-model="childminders_report.mood">
+              <v-radio-group v-model="childminder_report.mood">
                 <v-radio label="機嫌が良い" :value="0"></v-radio>
                 <v-radio label="普通" :value="1"></v-radio>
                 <v-radio label="機嫌が悪い" :value="2"></v-radio>
               </v-radio-group>
             </v-col>
           </v-row>
-          <v-row v-if="childminders_report.mood === 2">
+          <v-row v-if="childminder_report.mood === 2">
             <v-col>
               <v-textarea
                 outlined
-                v-model="childminders_report.mood_description"
+                v-model="childminder_report.mood_description"
                 label="理由等"
               >
               </v-textarea>
@@ -260,7 +260,7 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-radio-group v-model="childminders_report.is_medicine">
+              <v-radio-group v-model="childminder_report.is_medicine">
                 <v-radio label="お薬飲みました" :value="true"></v-radio>
                 <v-radio label="まだ飲んでいません" :value="false"></v-radio>
               </v-radio-group>
@@ -321,18 +321,18 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-radio-group v-model="childminders_report.appetite">
+              <v-radio-group v-model="childminder_report.appetite">
                 <v-radio label="よく食べた" :value="0"></v-radio>
                 <v-radio label="普通" :value="1"></v-radio>
                 <v-radio label="あんまり食べなかった" :value="2"></v-radio>
               </v-radio-group>
             </v-col>
           </v-row>
-          <v-row v-if="childminders_report.appetite === 2">
+          <v-row v-if="childminder_report.appetite === 2">
             <v-col>
               <v-textarea
                 outlined
-                v-model="childminders_report.appetite_description"
+                v-model="childminder_report.appetite_description"
                 label="理由等"
               >
               </v-textarea>
@@ -476,7 +476,7 @@
             <v-col>
               <v-textarea
                 outlined
-                v-model="childminders_report.notification"
+                v-model="childminder_report.notification"
                 label="伝達事項・留意点など"
               >
               </v-textarea>
@@ -521,7 +521,7 @@
             <v-col>
               <v-textarea
                 outlined
-                v-model="childminders_report.description"
+                v-model="childminder_report.description"
                 label="メッセージ・自由記述"
               >
               </v-textarea>
@@ -557,7 +557,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      childminders_report: {
+      childminder_report: {
         day: "2021/3/3",
         description: "自由記述",
         notification: "",
@@ -619,12 +619,12 @@ export default {
           this.error = true;
         });
     },
-    get_childminders_report() {
+    get_childminder_report() {
       const child_id = this.$route.params.id;
       const uri =
         "https://uniback-summer7913.herokuapp.com/children/" +
         child_id +
-        "/childminders_reports/today";
+        "/childminder_reports/today";
       axios
         .get(uri, {})
         .then((response) => {
@@ -719,16 +719,16 @@ export default {
       else if(user.role=="childminder"){
         const uri = "https://uniback-summer7913.herokuapp.com/children/" +
           child_id +
-          "/parents_reports/today";
+          "/childminder_reports/today";
           axios
           .post(uri, {
-            report: this.childminders_report,
+            report: this.childminder_report,
             user_id: user.id,
           })
           .then((response) => {
             console.log("post childminders preport");
             console.log(response.data[0]);
-            this.get_childminders_report()
+            this.get_childminder_report()
             this.success = true
           })
           .catch((error) => {
