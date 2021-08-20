@@ -712,7 +712,7 @@
               x-large
               bottom
               small
-              style="bottom: 90px; right:130px;"
+              style="top: 60px; right:10px;"
               class="font-weight-bold"
               >
               <v-spacer/>保存できました<v-spacer/><v-icon>mdi-close</v-icon></v-btn
