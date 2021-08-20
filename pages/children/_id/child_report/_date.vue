@@ -47,6 +47,8 @@
                   <span v-if=" parents_report.body_temperature === null " class="black--text"> 未入力 </span>
                   <span v-else class="black--text"> {{parents_report.body_temperature}}度 </span>
                 </v-col>
+              </v-row>
+              <v-row>
                 <v-col> 体調：
                   <span class="black--text">
                     <span v-if=" parents_report.is_cold_symptom === null "> 未入力 </span>
@@ -459,6 +461,8 @@
                       <span v-else> {{parents_report.bed_time}}時 </span>
                     </span>
                   </v-col>
+                </v-row>
+                <v-row>
                   <v-col > 起床：
                     <span class="black--text">
                       <span v-if=" parents_report.wake_up_time === null "> 未入力 </span>
@@ -823,6 +827,8 @@ export default {
             this.parents_report.pick_up_time
           );
           console.log(this.parents_report);
+          this.body_temperature_update()
+          console.log(this.parents_report.body_temperature);
           console.log("done");
         })
         .catch((error) => {
@@ -922,6 +928,9 @@ export default {
     close_message() {
       this.success= false
     },
+    body_temperature_update(){
+      this.parents_report.body_temperature = this.parents_report.body_temperature.toFixed(1)
+    }
   },
 };
 </script>

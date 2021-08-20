@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-app-bar dark fixed app color="primary">
-      <v-toolbar-title class="font-h1">Unisys連絡帳</v-toolbar-title>
+      <img src="@/assets/icon.png" width="40" height="40">
+      <v-toolbar-title class="font-h1">連絡帳</v-toolbar-title>
       <v-spacer/>
       <v-chip  label outlined v-if="$store.state.users.current_user.role=='childminder'">
         <v-icon left>

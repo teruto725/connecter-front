@@ -113,7 +113,7 @@ export default {
             temp.status = "提出忘れ";
             temp.notification = "--";
           } else {
-            temp.status = "未チェック";
+            temp.status = "未編集";
           }
         } else if (child.childminder_report.is_completed == false) {
           temp.status = "編集中";
@@ -121,7 +121,7 @@ export default {
           temp.status = "送信済み";
         }
         if (this.filter1){
-        if (temp.status == "編集中" || temp.status == "未チェック") {
+        if (temp.status == "編集中" || temp.status == "未編集") {
           this.display_children.push(temp);
         }
         }
@@ -136,7 +136,7 @@ export default {
         return "purple--text";
       } else if (status == "編集中") {
         return "blue--text";
-      } else if (status == "未チェック") {
+      } else if (status == "未編集") {
         return "red--text";
       } else if (status == "送信済み") {
         return "green--text";
