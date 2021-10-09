@@ -50,15 +50,15 @@ export default {
           text: "名前",
           align: "start",
           sortable: false,
-          value: "name",
+          value: "name"
         },
         { text: "クラス", value: "class" },
         { text: "編集状況", value: "status" },
-        { text: "特記事項", value: "notification" },
-      ],
+        { text: "特記事項", value: "notification" }
+      ]
     };
   },
-  created: function () {
+  created: function() {
     this.get_current_user();
     this.get_children();
   },
@@ -83,17 +83,17 @@ export default {
         "https://uniback-summer7913.herokuapp.com/children/today/list";
       axios
         .get(uri, {})
-        .then((response) => {
+        .then(response => {
           this.children = response.data;
           this.create_display_children(this.children);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           this.$router.push("/login");
         });
     },
     create_display_children() {
-      this.display_children=[]
+      this.display_children = [];
       for (let i in this.children) {
         let child = this.children[i];
         let temp = {};
@@ -120,17 +120,16 @@ export default {
         } else {
           temp.status = "送信済み";
         }
-        if (this.filter1){
-        if (temp.status == "編集中" || temp.status == "未編集") {
-          this.display_children.push(temp);
-        }
-        }
-        else{
+        if (this.filter1) {
+          if (temp.status == "編集中" || temp.status == "未編集") {
+            this.display_children.push(temp);
+          }
+        } else {
           this.display_children.push(temp);
         }
       }
     },
-    
+
     getStatusColor(status) {
       if (status == "提出忘れ") {
         return "purple--text";
