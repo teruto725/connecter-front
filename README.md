@@ -9,7 +9,7 @@ vue.js: 2.6.14
 ## hosting
 AWS Amplifyにデプロイしています。
 
-https://master.d1gfyiq9y2h6ei.amplifyapp.com/
+https://master.d1gfyiq9y2h6ei.amplifyapp.com/login_demo
 
 masterブランチを変更すると勝手に変更されます。
 
